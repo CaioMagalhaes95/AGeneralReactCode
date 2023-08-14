@@ -1,24 +1,42 @@
-import logo from './logo.svg';
 import './App.css';
+import React, { useState } from 'react'
+import { SideBar } from './components/SideBar/index.tsx'
+import { Layout, theme } from 'antd';
+import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+import { BrowserRouter } from 'react-router-dom';
+import { AppRouting } from './App.routing.tsx';
 
 function App() {
+  // eslint-disable-next-line no-mixed-operators
+  const [collapsed, setCollapsed] = useState(false);
+  const {
+    token: { colorBgContainer },
+  } = theme.useToken();
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <BrowserRouter>
+   <Layout className='layout'>
+    <SideBar />
+    <Layout className='site-layout'>
+      <Layout.Header style={{padding: 0, background: colorBgContainer}}>
+        {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+          className: 'trigger',
+          onClick: () => setCollapsed(!collapsed),
+        })}
+
+      </Layout.Header>
+      <Layout.Content
+        style={{
+          margin: '24px 16px',
+        }}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+         <AppRouting />
+      </Layout.Content>
+     
+    </Layout>
+   </Layout>
+   </BrowserRouter>
   );
 }
 
